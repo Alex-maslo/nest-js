@@ -11,18 +11,26 @@ import { CreateTableDto } from './dto/create-table.dto';
 import { Table } from './entities/table.entity';
 import { TablesService } from './tables.service';
 import { UpdateTableDto } from './dto/update-table.dto';
+import { ResponseTableDto } from './dto/response-table.dto';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Tables')
 @Controller('tables')
 export class TablesController {
   constructor(private readonly tableService: TablesService) {}
 
+  @ApiOperation({ summary: 'Create new table' })
+  @ApiResponse({
+    status: 201,
+    type: ResponseTableDto,
+  })
   @Post()
   async create(@Body() createTableDto: CreateTableDto): Promise<Table> {
     return await this.tableService.create(createTableDto);
   }
 
   @Get()
-  async findAll(): Promise<Table[]> {
+  async findAll(): Promise<ResponseTableDto[]> {
     return this.tableService.findAll();
   }
 
